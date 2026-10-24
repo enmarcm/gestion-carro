@@ -147,7 +147,7 @@ export function Services() {
           </div>
         )
       ) : (
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-2 gap-4 md:grid-cols-3 xl:grid-cols-4">
           {boot.categories.map((c, i) => (
             <button key={c.id} onClick={() => setOpen(c)} className="press neu rise grid min-w-0 content-between gap-4 p-4 text-left" style={{ minHeight: 132, animationDelay: `${Math.min(i, 10) * 35}ms` }}>
               <span className="grid h-12 w-12 place-items-center rounded-2xl text-white" style={{ background: `linear-gradient(135deg, ${c.color}, ${c.color}cc)`, boxShadow: `0 8px 16px ${c.color}44` }}><CatIcon name={c.icon} /></span>

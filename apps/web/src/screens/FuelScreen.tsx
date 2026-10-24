@@ -1,4 +1,5 @@
 import { Fuel, Plus } from 'lucide-react'
+import { daysBetween } from '@carro/shared'
 import { useApp } from '../lib/ctx'
 import { useFuel } from '../lib/data'
 import { fmtBs, fmtDate, fmtKm, fmtNum, fmtUsd } from '../lib/format'
@@ -13,6 +14,14 @@ export function FuelScreen() {
   const s = data?.summary
   const items = data?.items ?? []
   const trend = [...items].reverse().map((i) => i.kmPerLiter).filter((x): x is number => x !== null)
+  const best = trend.length ? Math.max(...trend) : null
+  const worst = trend.length ? Math.min(...trend) : null
+  const first = items[items.length - 1]
+  const last = items[0]
+  const spanDays = first && last ? Math.max(1, daysBetween(first.filledOn, boot.today)) : 0
+  const monthly = s && spanDays >= 30 ? (s.totalUsd / spanDays) * 30.4 : null
+  const sinceKm = last ? Math.max(0, boot.vehicle.odometerKm - last.odometerKm) : null
+  const sinceDays = last ? Math.max(0, daysBetween(last.filledOn, boot.today)) : null
 
   return (
     <div className="grid gap-5">
@@ -39,14 +48,21 @@ export function FuelScreen() {
                 <Trend points={trend} />
               </div>
             )}
-            <div className="grid grid-cols-2 gap-3 text-[13px]">
-              <p className="neu-in px-3 py-2"><span className="text-[var(--muted)]">Total litros</span><br /><b>{fmtNum(s?.totalLiters ?? 0)} L</b></p>
-              <p className="neu-in px-3 py-2"><span className="text-[var(--muted)]">Gastado</span><br /><b>{fmtUsd(s?.totalUsd ?? 0)}</b> <span className="text-[11px] text-[var(--muted)]">{fmtBs(s?.totalUsd, rate)}</span></p>
+            <div className="grid grid-cols-2 gap-3 text-[13px] sm:grid-cols-3">
+              <Mini label="Total litros" value={`${fmtNum(s?.totalLiters ?? 0)} L`} />
+              <Mini label="Gastado" value={fmtUsd(s?.totalUsd ?? 0)} sub={fmtBs(s?.totalUsd, rate)} />
+              <Mini label="Precio medio/L" value={s && s.totalLiters > 0 ? fmtUsd(s.totalUsd / s.totalLiters) : '—'} />
+              <Mini label="Km recorridos" value={fmtKm(s?.totalKm ?? 0)} />
+              <Mini label="Mejor / peor" value={best !== null && worst !== null ? `${fmtNum(best)} / ${fmtNum(worst)} km/L` : '—'} />
+              <Mini label="Consumo" value={s?.avgKmPerLiter ? `${fmtNum(100 / s.avgKmPerLiter)} L/100km` : '—'} />
+              <Mini label="Gasto por mes" value={monthly !== null ? fmtUsd(monthly) : '—'} sub={fmtBs(monthly, rate)} />
+              <Mini label="Desde última carga" value={sinceKm !== null ? `${fmtKm(sinceKm)}` : '—'} sub={sinceDays !== null ? `${sinceDays} día${sinceDays === 1 ? '' : 's'}` : undefined} />
+              <Mini label="Cargas" value={String(s?.count ?? 0)} />
             </div>
           </Card>
 
-          <section className="grid gap-3">
-            <h3 className="px-1 text-[12px] font-bold uppercase tracking-widest text-[var(--muted)]">Cargas</h3>
+          <section className="grid gap-3 md:grid-cols-2 md:items-start">
+            <h3 className="px-1 text-[12px] font-bold uppercase tracking-widest text-[var(--muted)] md:col-span-2">Cargas</h3>
             {items.map((i) => (
               <button key={i.id} onClick={() => editFuel(i)} className="press neu-sm grid w-full gap-2 p-4 text-left">
                 <span className="flex items-center justify-between gap-3">
@@ -75,6 +91,14 @@ export function FuelScreen() {
     </div>
   )
 }
+
+const Mini = ({ label, value, sub }: { label: string; value: string; sub?: string }) => (
+  <p className="neu-in min-w-0 px-3 py-2">
+    <span className="block truncate text-[11px] font-bold uppercase tracking-wider text-[var(--muted)]">{label}</span>
+    <b className="block truncate text-[15px]">{value}</b>
+    {sub && <span className="block truncate text-[11px] text-[var(--muted)]">{sub}</span>}
+  </p>
+)
 
 const Tag = ({ children, color = '#64748b' }: { children: React.ReactNode; color?: string }) => (
   <span className="rounded-full px-2.5 py-1" style={{ color, background: `${color}1c` }}>{children}</span>

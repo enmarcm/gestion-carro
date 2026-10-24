@@ -81,3 +81,13 @@ export function ShareBar({ pct, color }: { pct: number; color: string }) {
     </div>
   )
 }
+
+/** Progreso hacia el próximo cambio: color según urgencia. */
+export function ProgressBar({ pct, status }: { pct: number; status: 'overdue' | 'soon' | 'ok' }) {
+  const bg = status === 'overdue' ? 'linear-gradient(90deg,#f97316,#ef4444)' : status === 'soon' ? 'linear-gradient(90deg,#fbbf24,#f59e0b)' : 'linear-gradient(90deg,#3ccf94,#1f9d6b)'
+  return (
+    <div className="neu-in h-3 w-full overflow-hidden p-[2px]" style={{ borderRadius: 999 }} role="progressbar" aria-valuenow={Math.round(pct)} aria-valuemin={0} aria-valuemax={100}>
+      <div className="h-full" style={{ width: `${Math.max(4, Math.min(100, pct))}%`, background: bg, borderRadius: 999, transition: 'width .6s ease' }} />
+    </div>
+  )
+}

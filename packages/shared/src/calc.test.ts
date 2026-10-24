@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { dueStatus, fuelMetrics, fuelSummary, suggestNext } from './calc'
+import { dueProgress, dueStatus, fuelMetrics, fuelSummary, suggestNext } from './calc'
 
 describe('fuelMetrics', () => {
   const base = [
@@ -46,5 +46,17 @@ describe('dueStatus', () => {
 describe('suggestNext', () => {
   it('suma intervalos', () => {
     expect(suggestNext('2026-01-01', 10000, 4500, 180)).toEqual({ nextKm: 14500, nextDate: '2026-06-30' })
+  })
+})
+
+describe('dueProgress', () => {
+  it('mayor entre km y tiempo', () => {
+    const i = { lastKm: 1000, lastOn: '2026-01-01', nextKm: 5500, nextDate: '2026-04-01' }
+    expect(dueProgress(i, 2000, '2026-01-01')).toBeCloseTo((1000 / 4500) * 100)
+    expect(dueProgress(i, 1000, '2026-03-01')).toBeCloseTo((59 / 90) * 100)
+    expect(dueProgress(i, 9000, '2026-01-01')).toBe(100)
+  })
+  it('sin intervalo', () => {
+    expect(dueProgress({ lastKm: 0, lastOn: '2026-01-01', nextKm: null, nextDate: null }, 5, '2026-01-02')).toBeNull()
   })
 })

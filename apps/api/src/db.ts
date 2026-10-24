@@ -85,6 +85,12 @@ export async function migrate(sql: Sql) {
         on conflict (slug) do nothing`
     }
   }
+  await sql`update service_types set interval_days = 90 where slug = 'aceite-motor' and interval_days = 180`
+  // Registros de aceite con el próximo cambio calculado a 180 días: se corrigen a 90.
+  await sql`
+    update maintenance_logs l set next_date = l.performed_on + 90
+    from service_types t
+    where t.id = l.service_type_id and t.slug = 'aceite-motor' and l.next_date = l.performed_on + 180`
   await sql`
     insert into vehicle (id, brand, model, year, color, plate, odometer_km)
     values (1, 'Chevrolet', 'Corsa', 2001, 'Verde', '', 0) on conflict (id) do nothing`

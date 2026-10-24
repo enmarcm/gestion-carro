@@ -108,6 +108,22 @@ export function dueStatus(input: DueInput, odometerKm: number, today: string, wa
   return { status, kmLeft, daysLeft }
 }
 
+/** % del intervalo ya consumido (el mayor entre km y tiempo). null si no hay intervalo calculable. */
+export function dueProgress(
+  i: { lastKm: number; lastOn: string; nextKm: number | null; nextDate: string | null },
+  odometerKm: number,
+  today: string,
+): number | null {
+  const parts: number[] = []
+  if (i.nextKm !== null && i.nextKm > i.lastKm) parts.push((odometerKm - i.lastKm) / (i.nextKm - i.lastKm))
+  if (i.nextDate !== null) {
+    const total = daysBetween(i.lastOn, i.nextDate)
+    if (total > 0) parts.push(daysBetween(i.lastOn, today) / total)
+  }
+  if (!parts.length) return null
+  return Math.max(0, Math.min(1, Math.max(...parts))) * 100
+}
+
 export function addDays(date: string, days: number): string {
   return new Date(Date.parse(date + 'T00:00:00Z') + days * DAY).toISOString().slice(0, 10)
 }

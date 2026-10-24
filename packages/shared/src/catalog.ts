@@ -18,7 +18,7 @@ export const CATALOG: CatalogCategory[] = [
   {
     slug: 'aceite', name: 'Aceite motor', icon: 'Droplets', color: '#f5a524',
     types: [
-      { slug: 'aceite-motor', name: 'Cambio de aceite y filtro', intervalKm: 4500, intervalDays: 180 },
+      { slug: 'aceite-motor', name: 'Cambio de aceite y filtro', intervalKm: 4500, intervalDays: 90 },
       { slug: 'aceite-aditivo', name: 'Aditivo / limpieza de motor' },
     ],
   },

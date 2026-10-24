@@ -91,7 +91,7 @@ function Shell({ onLogout }: { onLogout: () => void }) {
 
   return (
     <AppCtx.Provider value={ctx}>
-      <div className="mx-auto min-h-[100dvh] w-full max-w-[560px] px-4 pt-safe" style={{ paddingBottom: 'calc(var(--nav-h) + 40px + env(safe-area-inset-bottom))' }}>
+      <div className="mx-auto min-h-[100dvh] w-full max-w-[560px] px-4 pt-safe pb-[calc(var(--nav-h)+40px+env(safe-area-inset-bottom))] md:max-w-[760px] lg:max-w-[1250px] lg:pl-[270px] lg:pr-10 lg:pb-12">
         <main key={tab} className="fade">
           {tab === 'home' && <Home />}
           {tab === 'services' && <Services />}
@@ -101,13 +101,17 @@ function Shell({ onLogout }: { onLogout: () => void }) {
         </main>
       </div>
 
-      <nav aria-label="Navegación principal" className="fixed inset-x-0 bottom-0 z-40 flex justify-center px-4 pb-[max(12px,env(safe-area-inset-bottom))]">
-        <ul className="neu m-0 flex h-[var(--nav-h)] w-full max-w-[520px] list-none items-center justify-between gap-1 p-2" style={{ borderRadius: 28 }}>
+      <nav aria-label="Navegación principal" className="fixed inset-x-0 bottom-0 z-40 flex justify-center px-4 pb-[max(12px,env(safe-area-inset-bottom))] lg:inset-y-0 lg:right-auto lg:w-[250px] lg:items-start lg:justify-start lg:p-5">
+        <div className="hidden w-full lg:absolute lg:left-5 lg:top-5 lg:block lg:w-[210px]">
+          <p className="title-wide text-[13px]">Mi Corsa</p>
+          <p className="mt-1 text-[11px] text-[var(--muted)]">Chevrolet Corsa 2001</p>
+        </div>
+        <ul className="neu m-0 flex h-[var(--nav-h)] w-full max-w-[520px] list-none items-center justify-between gap-1 p-2 lg:mt-20 lg:h-auto lg:w-[210px] lg:flex-col lg:items-stretch lg:justify-start lg:gap-2" style={{ borderRadius: 28 }}>
           {TABS.map(({ id, label, icon: Icon }) => (
             <li key={id} className="min-w-0 flex-1">
-              <button onClick={() => setTab(id)} aria-current={tab === id ? 'page' : undefined} className={cx('press grid h-full w-full place-items-center gap-0.5 py-2', tab === id ? 'neu-in text-[var(--green)]' : 'text-[var(--muted)]')} style={{ borderRadius: 20 }}>
+              <button onClick={() => setTab(id)} aria-current={tab === id ? 'page' : undefined} className={cx('press grid h-full w-full place-items-center gap-0.5 py-2 lg:flex lg:h-12 lg:justify-start lg:gap-3 lg:px-4', tab === id ? 'neu-in text-[var(--green)]' : 'text-[var(--muted)]')} style={{ borderRadius: 20 }}>
                 <Icon size={22} strokeWidth={tab === id ? 2.5 : 2} />
-                <span className="truncate text-[10px] font-bold">{label}</span>
+                <span className="truncate text-[10px] font-bold lg:text-[14px]">{label}</span>
               </button>
             </li>
           ))}

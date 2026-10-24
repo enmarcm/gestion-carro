@@ -21,7 +21,7 @@ export function StatsScreen() {
       ) : !data || total === 0 ? (
         <Card><Empty icon={<ChartColumn size={26} />} title="Sin datos aún" text="Cuando registres servicios con costo y cargas de gasolina verás tus gastos aquí." /></Card>
       ) : (
-        <>
+        <div className="grid items-start gap-5 lg:grid-cols-2">
           <Card className="grid gap-3">
             <p className="text-[12px] font-bold uppercase tracking-widest text-[var(--muted)]">Gasto total</p>
             <p className="text-[34px] font-bold leading-none">{fmtUsd(total)}</p>
@@ -57,7 +57,7 @@ export function StatsScreen() {
               ))}
             </Card>
           )}
-        </>
+        </div>
       )}
     </div>
   )
