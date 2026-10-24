@@ -1,0 +1,57 @@
+services:
+  db:
+    image: postgres:17-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: carro
+      POSTGRES_USER: carro
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?define POSTGRES_PASSWORD}
+    volumes:
+      - carro_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U carro -d carro"]
+      interval: 10s
+      timeout: 5s
+      retries: 6
+    networks: [carro]
+
+  api:
+    build:
+      context: .
+      dockerfile: apps/api/Dockerfile
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      NODE_ENV: production
+      PORT: "4000"
+      DATABASE_URL: postgres://carro:${POSTGRES_PASSWORD}@db:5432/carro
+      SESSION_SECRET: ${SESSION_SECRET:?define SESSION_SECRET}
+      INITIAL_PASSWORD: ${INITIAL_PASSWORD:-}
+      ALLOWED_ORIGIN: https://carro.enmarcm.site
+    ports:
+      - "127.0.0.1:${API_PORT:-4610}:4000"
+    read_only: true
+    cap_drop: [ALL]
+    security_opt: ["no-new-privileges:true"]
+    networks: [carro]
+
+  web:
+    build:
+      context: .
+      dockerfile: apps/web/Dockerfile
+      args:
+        VITE_API_URL: https://apicarro.enmarcm.site
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:${WEB_PORT:-4611}:8080"
+    cap_drop: [ALL]
+    security_opt: ["no-new-privileges:true"]
+    networks: [carro]
+
+volumes:
+  carro_pgdata:
+
+networks:
+  carro:

@@ -1,0 +1,108 @@
+@import 'tailwindcss';
+@import '@fontsource-variable/quicksand';
+
+@theme {
+  --font-sans: 'Quicksand Variable', ui-rounded, system-ui, sans-serif;
+}
+
+:root {
+  --bg: #e4eef8;
+  --bg-2: #dbe8f5;
+  --ink: #2a4660;
+  --muted: #7890a8;
+  --light: #ffffff;
+  --dark: rgba(150, 180, 212, 0.55);
+  --green: #1f9d6b;
+  --green-2: #3ccf94;
+  --violet: #7c5ce0;
+  --violet-2: #a45fd0;
+  --warn: #f59e0b;
+  --bad: #ef4444;
+  --ok: #10b981;
+  --r: 24px;
+  --nav-h: 76px;
+}
+
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+html, body, #root { min-height: 100%; }
+body {
+  margin: 0;
+  background: radial-gradient(1200px 700px at 15% -10%, #f3f9ff 0%, transparent 60%), linear-gradient(180deg, var(--bg) 0%, var(--bg-2) 100%);
+  background-attachment: fixed;
+  color: var(--ink);
+  font-family: var(--font-sans);
+  font-weight: 500;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+button, input, select, textarea { font: inherit; color: inherit; }
+h1, h2, h3, p { margin: 0; }
+
+/* ---------- Superficies neumórficas ---------- */
+.neu {
+  background: linear-gradient(145deg, #eaf3fc, #dfeaf6);
+  border-radius: var(--r);
+  box-shadow: 9px 9px 20px var(--dark), -9px -9px 20px var(--light);
+}
+.neu-sm {
+  background: linear-gradient(145deg, #eaf3fc, #dfeaf6);
+  border-radius: 16px;
+  box-shadow: 5px 5px 12px var(--dark), -5px -5px 12px var(--light);
+}
+.neu-in {
+  background: #dde9f5;
+  border-radius: 16px;
+  box-shadow: inset 4px 4px 9px rgba(150, 180, 212, 0.55), inset -4px -4px 9px #ffffff;
+}
+.neu-flat { background: rgba(255, 255, 255, 0.35); border-radius: 18px; box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.6); }
+
+.press { transition: transform 0.12s ease, box-shadow 0.12s ease, filter 0.12s ease; cursor: pointer; }
+.press:active { transform: scale(0.97); box-shadow: inset 3px 3px 7px var(--dark), inset -3px -3px 7px var(--light); }
+.press:focus-visible, .field:focus-visible, .field:focus-within { outline: 2px solid var(--green-2); outline-offset: 2px; }
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--green-2), var(--green));
+  color: #fff;
+  box-shadow: 6px 6px 14px rgba(31, 157, 107, 0.35), -4px -4px 10px var(--light);
+  border-radius: 18px;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+}
+.btn-primary:active { box-shadow: inset 3px 3px 8px rgba(0, 0, 0, 0.25); }
+.btn-danger { color: var(--bad); }
+button:disabled { opacity: 0.55; pointer-events: none; }
+
+.grad-violet { background: linear-gradient(135deg, #7c8cf0, var(--violet) 55%, var(--violet-2)); }
+.title-wide { letter-spacing: 0.32em; text-transform: uppercase; font-weight: 600; }
+
+/* Inputs: nunca desbordan ni se montan (min-w-0 + box-sizing) */
+.field {
+  width: 100%; min-width: 0; height: 52px; padding: 0 16px;
+  border: 0; border-radius: 16px; background: #dde9f5;
+  box-shadow: inset 4px 4px 9px rgba(150, 180, 212, 0.55), inset -4px -4px 9px #fff;
+  color: var(--ink); font-weight: 600; font-size: 16px; appearance: none; -webkit-appearance: none;
+}
+textarea.field { height: auto; padding: 14px 16px; resize: none; line-height: 1.4; }
+.field::placeholder { color: #a3b6ca; font-weight: 500; }
+.field[aria-invalid='true'] { box-shadow: inset 4px 4px 9px rgba(239, 68, 68, 0.25), inset -4px -4px 9px #fff, 0 0 0 2px rgba(239, 68, 68, 0.55); }
+input[type='date'].field { min-height: 52px; }
+
+.scroll-y { overflow-y: auto; overscroll-behavior: contain; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+.scroll-y::-webkit-scrollbar { display: none; }
+
+.pb-safe { padding-bottom: max(16px, env(safe-area-inset-bottom)); }
+.pt-safe { padding-top: max(16px, env(safe-area-inset-top)); }
+
+/* Animaciones */
+@keyframes rise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+@keyframes sheet-in { from { transform: translateY(100%); } to { transform: none; } }
+@keyframes fade { from { opacity: 0; } to { opacity: 1; } }
+@keyframes pulse-soft { 0%, 100% { opacity: 1; } 50% { opacity: 0.55; } }
+.rise { animation: rise 0.45s cubic-bezier(0.2, 0.8, 0.2, 1) both; }
+.sheet { animation: sheet-in 0.32s cubic-bezier(0.2, 0.8, 0.2, 1) both; }
+.fade { animation: fade 0.25s ease both; }
+.skeleton { animation: pulse-soft 1.4s ease infinite; background: #d3e2f1; border-radius: 14px; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
+}
