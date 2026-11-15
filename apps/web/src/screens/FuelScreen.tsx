@@ -65,11 +65,11 @@ export function FuelScreen() {
             <h3 className="px-1 text-[12px] font-bold uppercase tracking-widest text-[var(--muted)] md:col-span-2">Cargas</h3>
             {items.map((i) => (
               <button key={i.id} onClick={() => editFuel(i)} className="press neu-sm grid w-full gap-2 p-4 text-left">
-                <span className="flex items-center justify-between gap-3">
-                  <span className="text-[15px] font-bold">{fmtDate(i.filledOn)}</span>
-                  <span className="text-right">
-                    <span className="text-[15px] font-bold">{fmtUsd(i.totalUsd)}</span>
-                    <span className="ml-2 text-[11px] text-[var(--muted)]">{fmtBs(i.totalUsd, rate)}</span>
+                <span className="flex items-start justify-between gap-3">
+                  <span className="shrink-0 text-[15px] font-bold">{fmtDate(i.filledOn)}</span>
+                  <span className="min-w-0 text-right">
+                    <span className="block truncate text-[15px] font-bold">{fmtUsd(i.totalUsd)}</span>
+                    <span className="block truncate text-[11px] text-[var(--muted)]">{fmtBs(i.totalUsd, rate)}</span>
                   </span>
                 </span>
                 <span className="text-[12px] text-[var(--muted)]">

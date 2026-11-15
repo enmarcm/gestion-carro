@@ -75,13 +75,13 @@ export function Home() {
             </button>
           </Card>
 
-          <div className="grid grid-cols-2 gap-4">
-            <Button onClick={() => addMaintenance()}><Plus size={18} />Mantenimiento</Button>
-            <Button variant="soft" onClick={addFuel}><Fuel size={18} className="text-[#ec4899]" />Gasolina</Button>
+          <div className="grid grid-cols-1 gap-3 min-[360px]:grid-cols-2 sm:gap-4">
+            <Button className="!px-3 text-[14px] sm:text-[15px]" onClick={() => addMaintenance()}><Plus size={18} /><span className="truncate">Mantenimiento</span></Button>
+            <Button variant="soft" className="!px-3 text-[14px] sm:text-[15px]" onClick={addFuel}><Fuel size={18} className="text-[#ec4899]" /><span className="truncate">Gasolina</span></Button>
           </div>
 
           <Card className="rise flex items-center gap-4" style={{ animationDelay: '60ms' }}>
-            <Ring value={health} label="Salud" size={132} />
+            <Ring value={health} label="Salud" size={116} />
             <div className="min-w-0 flex-1">
               <p className="text-[17px] font-bold">{urgent.length === 0 ? 'Todo al día' : `${urgent.length} por atender`}</p>
               <p className="mt-1 text-[13px] text-[var(--muted)]">
@@ -169,7 +169,7 @@ export function Home() {
 
 export function Stat({ label, value, unit }: { label: string; value: string; unit?: string }) {
   return (
-    <div className="neu-in min-w-0 px-2 py-3">
+    <div className="neu-in min-w-0 px-2 py-3 text-center">
       <p className="truncate text-[11px] font-bold uppercase tracking-wider text-[var(--muted)]">{label}</p>
       <p className="mt-1 truncate text-[19px] font-bold">{value}</p>
       {unit && <p className="text-[11px] font-semibold text-[var(--muted)]">{unit}</p>}

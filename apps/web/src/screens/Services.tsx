@@ -149,10 +149,10 @@ export function Services() {
       ) : (
         <div className="grid grid-cols-2 gap-4 md:grid-cols-3 xl:grid-cols-4">
           {boot.categories.map((c, i) => (
-            <button key={c.id} onClick={() => setOpen(c)} className="press neu rise grid min-w-0 content-between gap-4 p-4 text-left" style={{ minHeight: 132, animationDelay: `${Math.min(i, 10) * 35}ms` }}>
+            <button key={c.id} onClick={() => setOpen(c)} className="press neu rise grid min-w-0 content-between gap-4 p-3.5 text-left sm:p-4" style={{ minHeight: 132, animationDelay: `${Math.min(i, 10) * 35}ms` }}>
               <span className="grid h-12 w-12 place-items-center rounded-2xl text-white" style={{ background: `linear-gradient(135deg, ${c.color}, ${c.color}cc)`, boxShadow: `0 8px 16px ${c.color}44` }}><CatIcon name={c.icon} /></span>
               <span className="min-w-0">
-                <span className="block text-[15px] font-bold leading-tight">{c.name}</span>
+                <span className="block text-[14px] font-bold leading-tight [overflow-wrap:break-word] sm:text-[15px]">{c.name}</span>
                 <span className="block text-[12px] text-[var(--muted)]">{c.types.length} servicio{c.types.length === 1 ? '' : 's'}</span>
               </span>
             </button>

@@ -108,3 +108,14 @@ input[type='date'].field { min-height: 52px; }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
 }
+
+/* Responsive: los hijos de grid/flex no pueden forzar su pista más ancha que el contenedor
+   (min-width:auto + texto nowrap/truncate era lo que "empujaba" todo fuera de pantalla). */
+@layer base {
+  .grid > *, .flex > * { min-width: 0; }
+  .flex > svg { flex-shrink: 0; }
+  img, svg, video, canvas { max-width: 100%; }
+}
+/* iOS: el input date tiene ancho intrínseco propio y desborda columnas estrechas */
+input[type='date'].field { display: block; max-width: 100%; }
+input[type='date'].field::-webkit-date-and-time-value { text-align: left; }

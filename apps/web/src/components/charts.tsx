@@ -7,7 +7,7 @@ export function Ring({ value, label, size = 168, from = '#7c8cf0', to = '#a45fd0
   const v = Math.max(0, Math.min(100, value))
   const r = 44, c = 2 * Math.PI * r
   return (
-    <div className="neu-in relative grid place-items-center" style={{ width: size, height: size, borderRadius: '50%', boxShadow: `inset 6px 6px 14px rgba(150,180,212,.55), inset -6px -6px 14px #fff, 0 0 28px ${glow}` }}>
+    <div className="neu-in relative grid shrink-0 place-items-center" style={{ width: size, height: size, borderRadius: '50%', boxShadow: `inset 6px 6px 14px rgba(150,180,212,.55), inset -6px -6px 14px #fff, 0 0 28px ${glow}` }}>
       <svg viewBox="0 0 100 100" width={size - 22} height={size - 22} className="-rotate-90">
         <defs>
           <linearGradient id={id} x1="0" y1="0" x2="1" y2="1">
@@ -19,7 +19,7 @@ export function Ring({ value, label, size = 168, from = '#7c8cf0', to = '#a45fd0
         <circle cx="50" cy="50" r={r} fill="none" stroke={`url(#${id})`} strokeWidth="9" strokeLinecap="round" strokeDasharray={`${(c * v) / 100} ${c}`} style={{ transition: 'stroke-dasharray .9s cubic-bezier(.2,.8,.2,1)' }} />
       </svg>
       <div className="absolute grid place-items-center text-center">
-        <span className="text-[30px] font-bold leading-none">{Math.round(v)}%</span>
+        <span className="font-bold leading-none" style={{ fontSize: Math.round(size * 0.21) }}>{Math.round(v)}%</span>
         {label && <span className="mt-1 text-[11px] font-bold uppercase tracking-widest text-[var(--muted)]">{label}</span>}
       </div>
     </div>

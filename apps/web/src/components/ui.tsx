@@ -1,10 +1,11 @@
 import { useEffect, useId, useRef, type ReactNode, type ButtonHTMLAttributes, type InputHTMLAttributes, type SelectHTMLAttributes, type TextareaHTMLAttributes } from 'react'
+import { createPortal } from 'react-dom'
 import { Loader2, X } from 'lucide-react'
 
 export const cx = (...a: (string | false | null | undefined)[]) => a.filter(Boolean).join(' ')
 
 export function Card({ className, children, ...p }: { className?: string; children: ReactNode } & React.HTMLAttributes<HTMLDivElement>) {
-  return <div className={cx('neu p-5 min-w-0', className)} {...p}>{children}</div>
+  return <div className={cx('neu p-4 min-w-0 sm:p-5', className)} {...p}>{children}</div>
 }
 
 export function Button({ variant = 'primary', loading, className, children, ...p }: ButtonHTMLAttributes<HTMLButtonElement> & { variant?: 'primary' | 'soft' | 'danger'; loading?: boolean }) {
@@ -13,7 +14,7 @@ export function Button({ variant = 'primary', loading, className, children, ...p
       {...p}
       disabled={p.disabled || loading}
       className={cx(
-        'press inline-flex h-[52px] items-center justify-center gap-2 px-5 text-[15px]',
+        'press inline-flex h-[52px] min-w-0 items-center justify-center gap-2 px-5 text-[15px]',
         variant === 'primary' && 'btn-primary',
         variant !== 'primary' && 'neu-sm font-bold',
         variant === 'danger' && 'btn-danger',
@@ -91,18 +92,19 @@ export function Sheet({ open, onClose, title, children, footer }: { open: boolea
     }
   }, [open, onClose])
   if (!open) return null
-  return (
+  return createPortal(
     <div className="fixed inset-0 z-50 flex items-end justify-center sm:items-center" role="dialog" aria-modal="true" aria-label={title}>
       <div className="fade absolute inset-0 bg-[#2a4660]/30 backdrop-blur-[3px]" onClick={onClose} />
       <div ref={ref} tabIndex={-1} className="sheet relative flex max-h-[92dvh] w-full max-w-[520px] flex-col outline-none sm:max-h-[86dvh]" style={{ background: 'linear-gradient(160deg,#eef5fc,#dfeaf6)', borderRadius: '28px 28px 0 0', boxShadow: '0 -10px 40px rgba(60,90,130,.25)' }}>
-        <div className="flex items-center justify-between gap-3 px-5 pb-3 pt-5">
+        <div className="flex items-center justify-between gap-3 px-4 pb-3 pt-5 sm:px-5">
           <h2 className="min-w-0 truncate text-[19px] font-bold">{title}</h2>
           <IconButton label="Cerrar" onClick={onClose}><X size={20} /></IconButton>
         </div>
-        <div className="scroll-y min-h-0 flex-1 px-5 pb-4">{children}</div>
-        {footer && <div className="pb-safe px-5 pt-3">{footer}</div>}
+        <div className="scroll-y min-h-0 flex-1 px-4 pb-4 sm:px-5">{children}</div>
+        {footer && <div className="pb-safe px-4 pt-3 sm:px-5">{footer}</div>}
       </div>
-    </div>
+    </div>,
+    document.body,
   )
 }
 
